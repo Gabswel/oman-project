@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KZ → Oman Employment Structuring Advisory</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f8fa; }
+  button { font-family: inherit; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  ::-webkit-scrollbar { height: 4px; width: 4px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const colors = {
+  navy:"#0d2b4e",navyLight:"#1a3f6f",gold:"#c9a84c",goldLight:"#e8c97e",
+  slate:"#4a5568",slateLight:"#718096",bg:"#f7f8fa",white:"#ffffff",
+  border:"#e2e8f0",green:"#1a6b3c",greenBg:"#edf7f1",red:"#9b1c1c",
+  redBg:"#fef2f2",amber:"#92400e",amberBg:"#fffbeb",blue:"#1e40af",
+  blueBg:"#eff6ff",purple:"#5b21b6",purpleBg:"#f5f3ff",
+};
+
+const structures = [
+  {id:1,label:"Direct Employment",short:"Standard Oman employment contract with local employer.",
+   pros:["Fully compliant and accepted by all Omani employers","Straightforward visa sponsorship via employer","Access to end-of-service gratuity under Labour Law","No corporate setup costs or ongoing compliance burden","Simplest banking — salary paid directly to personal account"],
+   cons:["Zero income tax optimisation flexibility (pre-2028)","From 2028: 5% PIT on income above OMR 42,000 (~USD 109K)","Tied to single employer / sponsor; limited mobility","Omanisation quotas may restrict roles or renewals","End-of-service gratuity capped at 24 months salary"],
+   tax:"Currently 0% PIT (until Dec 31 2027). From Jan 2028: 5% flat on worldwide taxable income above OMR 42,000 for tax residents (183+ days in Oman). Employer withholds and remits. No double taxation risk given KZ-Oman DTAA (ratified Sep 2025, pending KZ ratification).",
+   social:"Expatriates exempt from Omani pension/PASI contributions. Employer contributes 1% of basic salary for work injury insurance. Employer also contributes to provident/end-of-service gratuity scheme under SPF (implementing in phases). No mandatory employee-side payroll deduction.",
+   doubleTax:"Low risk. KZ-Oman DTAA signed May 2025, ratified by Oman Sep 2025. Once in force: salary earned/taxed in Oman will be exempt or credited in KZ. Establish Oman tax residency (183+ days) to exit KZ tax net.",
+   residency:"Employment visa (2-year renewable) grants Oman tax and physical residency. Break KZ tax residency by spending <183 days in KZ and severing 'centre of vital interests' (relocate family, sell/close KZ property).",
+   pe:"No PE risk for employee. The employer bears any PE risk.",
+   visa:"Standard Employment Visa (2yr renewable). Sponsor is Omani employer. Family included (spouse + children under 21). Processing 4–8 weeks.",
+   banking:"Full Omani bank account access. Salary in OMR or USD. Free repatriation of funds. No capital controls.",
+   compliance:"Minimal for employee. From 2028: annual PIT filing required if income >OMR 42K. Employer handles payroll.",
+   acceptability:"★★★★★ — universally accepted. Standard and expected by all Omani entities.",
+   commonality:"The dominant structure for 90%+ of GCC expatriates.",risk:"low"},
+
+  {id:2,label:"Kazakhstan Company",short:"KZ-incorporated entity invoices Omani client for services.",
+   pros:["Maintains KZ business relationships and existing corporate infrastructure","Revenue booked in KZ entity — potential for lower KZ CIT (20%) vs alternatives","Flexibility to work multiple clients globally","Owner controls profit distribution timing"],
+   cons:["KZ company remains KZ tax resident — 20% CIT on profits","Owner remains KZ individual tax resident unless actively breaks ties","10% dividend withholding tax on distributions to individual","Significant PE risk in Oman if services delivered habitually from Oman","Omani employers highly reluctant — complex contractual structure","Requires Oman commercial registration or risk illegal work"],
+   tax:"KZ CIT: 20% on company profits. KZ PIT: 10% on dividends distributed to individual shareholder. Effective combined rate: ~28%. Oman may impose withholding tax (WHT) on fees paid to KZ company under Oman CIT Law (typically 10% WHT on foreign service providers). DTAA may reduce/eliminate this once in force.",
+   social:"If individual physically works in Oman, Omani social protection obligations may apply. KZ social contributions inapplicable for services rendered abroad in most cases.",
+   doubleTax:"High complexity. KZ company taxed in KZ; WHT in Oman on fees; owner taxed again on dividends. DTAA reduces but does not eliminate double layer. Effective total tax burden likely 25–35%.",
+   residency:"Owner likely remains KZ tax resident (citizenship, family ties, property). Very difficult to break KZ tax residency while maintaining active KZ company.",
+   pe:"HIGH RISK. If the KZ company's sole director/employee habitually performs services in Oman, Omani tax authorities may deem a Permanent Establishment, subjecting KZ company profits to Oman CIT (15%).",
+   visa:"This structure does not provide an Oman work visa. Individual would need a separate contractor/business visa, which is legally ambiguous for extended stays. High immigration risk.",
+   banking:"Payments from Oman to KZ: USD wire transfers, typically smooth but subject to Oman WHT deduction at source.",
+   compliance:"Dual compliance: KZ CIT return + KZ individual PIT return + potential Oman WHT filings + PE risk management. High administrative burden.",
+   acceptability:"★☆☆☆☆ — rarely accepted by reputable Omani employers.",
+   commonality:"Uncommon and not recommended. Seen only in short-term project engagements.",risk:"high"},
+
+  {id:3,label:"UAE Free Zone Company",short:"UAE FZ entity invoices Oman; owner can obtain UAE residency.",
+   pros:["0% personal income tax in UAE (no PIT planned)","0% corporate tax in UAE Free Zone on qualifying income","Easy setup — from AED 12,500–15,000, fully online","UAE residency visa available to owner/director","Internationally credible jurisdiction for consulting invoices","Banking flexibility — multi-currency accounts (USD, EUR, OMR)","Separates advisory income from employment income cleanly"],
+   cons:["UAE corporate tax introduced 2023: 9% on profits >AED 375,000 (~USD 102K)","Substance requirements: free zone must have genuine activity","UAE tax residency requires 183 days physically in UAE — hard to maintain if working in Oman","Oman WHT on fees paid to UAE entity (~10% under Oman CIT law)","Omani employers may resist fee-only arrangements for senior roles"],
+   tax:"UAE: 0% PIT. Free zone CIT: 0% on qualifying income (must meet substance test) or 9% on income >AED 375K if substance not met. Oman WHT: 10% on services fees withheld at source. Effective: ~10% Oman WHT + possible UAE CIT = ~10–19% depending on substance.",
+   social:"No mandatory UAE social contributions for non-GCC nationals. No Oman social contributions if not directly employed in Oman.",
+   doubleTax:"Moderate. UAE-Oman DTAA in force reduces friction. If UAE tax residency is properly established (183+ days UAE), KZ tax residency can be broken via DTAA tie-breaker rules.",
+   residency:"UAE: investor/partner visa via free zone company (2–3 year renewable). But UAE tax residency requires 183+ days in UAE — creates tension with Oman work location.",
+   pe:"MODERATE-HIGH. If the UAE company's sole beneficial owner consistently works in Oman, Oman Tax Authority can argue Oman PE and tax profits locally.",
+   visa:"UAE residence visa via free zone. Separate Oman business/contractor visa required for work in Oman. Dual visa maintenance adds cost (~AED 3,000–5,000/yr for UAE).",
+   banking:"Excellent. UAE banks (ENBD, Mashreq, ADCB) offer multi-currency accounts. Easy international wires.",
+   compliance:"UAE: annual audit if turnover >AED 50M; economic substance reporting. KZ: must file foreign company ownership declaration. Oman: WHT returns. Medium-high complexity.",
+   acceptability:"★★★☆☆ — accepted for consulting/advisory mandates.",
+   commonality:"Very common among senior GCC consultants, interim executives, and international advisors.",risk:"medium"},
+
+  {id:4,label:"Independent Consultant",short:"Individual contracts directly with Omani client as sole trader / freelancer.",
+   pros:["Maximum flexibility — multiple clients simultaneously","No corporate setup cost","Negotiate day rates or project fees","Simpler than corporate structures for short-term engagements"],
+   cons:["Oman has no formal freelance/sole trader visa for foreigners","No visa sponsorship — legally precarious for extended stays","Likely treated as employment by Omani Labour authorities (substance over form)","No end-of-service gratuity entitlement","Banking: harder to open personal account without employment residency","From 2028: full exposure to Oman PIT on consulting income"],
+   tax:"If billed as individual: Oman WHT on fees (10%) typically applies. If treated as employment: normal payroll rules apply from 2028. Currently 0% PIT but from 2028 fees >OMR 42K taxed at 5%.",
+   social:"No Omani social contributions. No KZ contributions if non-resident.",
+   doubleTax:"Low once KZ tax residency broken. DTAA protects against dual taxation on same income.",
+   residency:"No clear visa pathway for foreign individual consultants working in Oman. Usually requires employer sponsorship, making this structure legally impractical for extended engagements.",
+   pe:"N/A as individual — no corporate PE. But extended presence may trigger personal tax residency and Oman taxation.",
+   visa:"No dedicated visa. Must use employment visa (requiring sponsor) or enter on visit visa (not legally permitted for work). HIGH compliance risk.",
+   banking:"Difficult without residency. Business accounts unavailable without trade licence.",
+   compliance:"Simple in theory but legally fragile. High risk of reclassification as employee by Omani Ministry of Manpower.",
+   acceptability:"★★☆☆☆ — only for genuine short-term advisory visits (<30 days).",
+   commonality:"Used only for very short-term technical engagements. Not viable as a standalone structure.",risk:"high"},
+
+  {id:5,label:"Hybrid: Salary + Advisory Fee",short:"Base salary from Oman employer + consulting fee from UAE/offshore entity.",
+   pros:["Optimises pre-2028 tax-free environment by splitting income streams","From 2028: salary below OMR 42K threshold avoids PIT; advisory fee taxed only if >threshold","Provides employment stability (visa, gratuity) with consulting flexibility","Advisory fee income can be routed through UAE FZ entity (lower effective tax)","Commonly used by senior GCC executives","Acceptable to sophisticated Omani employers for genuine advisory scope"],
+   cons:["Requires genuine separation of roles — legal and operational","Omani employer must accept dual-track arrangement","From 2028: aggregated worldwide income >OMR 42K triggers 5% PIT on excess","UAE FZ company maintenance cost (~AED 15–25K/yr)","Risk of Oman Tax Authority aggregating both income streams","Oman PE risk on the UAE FZ consulting entity"],
+   tax:"Pre-2028: combined rate 0% (Oman salary) + 0%/9% (UAE advisory fee, depending on substance). Post-2028: 5% on Oman-taxable income >OMR 42K. Strategic allocation: keep Oman salary at/below OMR 42K; route excess advisory income through UAE FZ.",
+   social:"Employer contributes to SPF work-injury (1%) on salary portion. Advisory fee portion: no social contributions.",
+   doubleTax:"Well-managed under DTAA. Salary: Oman source, taxed in Oman. Advisory fees: UAE source, taxed in UAE (0% or 9%). Credit mechanism under DTAA eliminates double taxation.",
+   residency:"Oman employment visa provides residency and tax residency. UAE FZ visa optional but provides flexibility. KZ residency broken if <183 days in KZ and family/property ties severed.",
+   pe:"Managed risk: UAE FZ company must demonstrate genuine substance (UAE-based activities, meetings, deliverables). Oman work must be clearly attributable to employment role, not advisory entity.",
+   visa:"Primary: Oman Employment Visa (employer-sponsored). Secondary: UAE investor visa (optional, for banking/flexibility). Dual residency is legally possible and common among GCC professionals.",
+   banking:"Dual: Oman bank for salary; UAE bank (multi-currency) for advisory fees. Optimal for international mobility and fund management.",
+   compliance:"Medium-high: Oman payroll compliance + UAE FZ annual filing + coordination of DTAA positions. Recommend engaging a Big4 or specialist firm for annual tax review.",
+   acceptability:"★★★★☆ — accepted by international organisations, private equity, financial institutions, and sophisticated Omani corporates.",
+   commonality:"VERY COMMON among C-suite and senior advisory professionals in GCC.",risk:"medium-low"},
+
+  {id:6,label:"Executive Relocation Package",short:"Salary structured with tax-efficient allowances and benefits-in-kind.",
+   pros:["Maximises take-home by converting taxable salary to non-taxable benefits (pre-2028)","Housing, schooling, car, and flights allowances typically tax-free currently","End-of-service gratuity accrues on basic salary only — lower basic = lower gratuity liability for employer","Internationally standard package for senior expatriate executives","Demonstrates employer commitment, easing KZ relocation decision"],
+   cons:["From 2028: benefits-in-kind are included in 'gross income' per Oman PIT Law — partial loss of efficiency","Package negotiation requires sophisticated HR/legal team on employer side","Public sector entities have rigid pay scales limiting flexibility","Tax equalisation clauses add complexity if individual also has KZ tax exposure"],
+   tax:"Currently: allowances (housing, transport, schooling) are not subject to PIT (no PIT exists). From 2028: gross income includes cash and in-kind receipts. Strategy: maximise basic salary just below OMR 42K; structure excess as employer-paid benefits.",
+   social:"SPF contributions calculated on 'basic wage' only — lower basic salary reduces employer contribution base.",
+   doubleTax:"N/A — package structure does not create additional tax jurisdictions. DTAA handles any residual KZ exposure.",
+   residency:"Employment visa + full family relocation establishes clean Oman tax residency. Family relocation simultaneously severs KZ 'centre of vital interests' — critical for breaking KZ tax residency.",
+   pe:"No PE risk — pure employment structure.",
+   visa:"Employment visa for principal + family visa for spouse and children under 21. School access, medical coverage typically included in executive packages.",
+   banking:"Standard Omani bank accounts. Employer may provide banking introduction letter to expedite account opening.",
+   compliance:"Straightforward. Employer manages payroll. Employee files annual PIT return from 2028 only if income >OMR 42K.",
+   acceptability:"★★★★★ — universally accepted. Expected standard for senior international hires.",
+   commonality:"Universal for all senior expatriate executive roles in GCC.",risk:"low"},
+
+  {id:7,label:"International Holding / Consulting Co.",short:"Offshore holding company (BVI, Cayman, Netherlands, Cyprus) owns UAE FZ opco; invoices Oman.",
+   pros:["Maximum structural flexibility for global consulting business","Holding company can receive dividends from UAE FZ at 0% or minimal WHT","Asset protection and estate planning benefits","Ideal for professionals with multiple GCC/global clients","BEPS-compliant if properly structured with substance"],
+   cons:["Highest setup and maintenance cost (USD 10–25K+ annually)","Complex compliance: CRS/FATCA reporting, economic substance, beneficial owner registers","Overkill for a single-client Oman engagement","KZ CFC rules may attribute holding company income to KZ individual","Significant OECD BEPS and Pillar Two scrutiny if revenues large enough","Oman PE risk remains if all work performed in Oman"],
+   tax:"Holding company: 0% (BVI/Cayman) or treaty-rate (Netherlands, Cyprus). UAE FZ Opco: 0%/9%. Oman WHT on fees: 10%. KZ CFC rules: if KZ individual owns >50% of offshore entity and entity pays <10% tax, KZ may attribute profits to KZ individual (10% PIT on attributed income).",
+   social:"None at holding level. UAE opco: no mandatory contributions for non-GCC nationals.",
+   doubleTax:"Complex but manageable with proper treaty planning. Holding jurisdiction choice critical: Netherlands and Cyprus have extensive treaty networks. Requires specialist tax counsel.",
+   residency:"No residency directly from holding structure. Must maintain UAE (or other) residency separately. If KZ tax residency not broken, KZ CFC rules create residual KZ tax exposure.",
+   pe:"HIGHEST RISK structure if individual works solely in Oman. Multiple layers of PE exposure. Requires robust substance across all entities.",
+   visa:"No visa from holding structure alone. UAE residency obtained through UAE FZ opco. Oman work requires separate arrangement.",
+   banking:"Excellent. Holding entity can hold accounts in Singapore, Switzerland, UK, UAE. Multi-currency, investment-grade private banking available.",
+   compliance:"Very high: multiple annual audits, CRS/FATCA filings, economic substance reports, KZ CFC disclosures, Oman WHT returns. Requires a specialist adviser (Big4 recommended).",
+   acceptability:"★★☆☆☆ — acceptable only for top-tier management consultancies or PE-backed advisory mandates.",
+   commonality:"Used by senior partners of international firms, PE executives, and serial GCC entrepreneurs.",risk:"medium-high"},
+];
+
+const riskColor = {
+  low:{bg:colors.greenBg,text:colors.green,label:"Low Risk"},
+  "medium-low":{bg:"#f0fdf4",text:"#166534",label:"Medium-Low"},
+  medium:{bg:colors.amberBg,text:colors.amber,label:"Medium Risk"},
+  "medium-high":{bg:"#fff7ed",text:"#9a3412",label:"Medium-High"},
+  high:{bg:colors.redBg,text:colors.red,label:"High Risk"},
+};
+
+const tabs = ["Overview","Tax & Social","Residency & Visa","Compliance & Risk","Recommendation"];
+
+const rankingData = [
+  {label:"1. Hybrid (Salary + Advisory Fee)",compliance:4,taxEfficiency:5,flexibility:5,ease:3},
+  {label:"2. Executive Relocation Package",compliance:5,taxEfficiency:4,flexibility:3,ease:5},
+  {label:"3. Direct Employment",compliance:5,taxEfficiency:3,flexibility:2,ease:5},
+  {label:"4. UAE Free Zone Company",compliance:4,taxEfficiency:4,flexibility:5,ease:4},
+  {label:"5. Int'l Holding Co.",compliance:3,taxEfficiency:5,flexibility:5,ease:1},
+  {label:"6. KZ Company",compliance:2,taxEfficiency:2,flexibility:3,ease:2},
+  {label:"7. Independent Consultant",compliance:1,taxEfficiency:3,flexibility:4,ease:2},
+];
+
+const {useState} = React;
+
+function ScoreDots({score,max=5}){
+  return React.createElement('span',{style:{display:'flex',gap:3,alignItems:'center',justifyContent:'center'}},
+    Array.from({length:max}).map((_,i)=>React.createElement('span',{key:i,style:{width:8,height:8,borderRadius:'50%',background:i<score?colors.navy:colors.border,display:'inline-block'}}))
+  );
+}
+
+function Badge({risk}){
+  const r=riskColor[risk];
+  return React.createElement('span',{style:{background:r.bg,color:r.text,fontSize:11,fontWeight:500,padding:'2px 8px',borderRadius:20,border:`1px solid ${r.text}33`,whiteSpace:'nowrap'}},r.label);
+}
+
+function SectionTitle({children}){
+  return React.createElement('div',{style:{fontSize:11,fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:colors.gold,marginBottom:6,marginTop:16}},children);
+}
+
+function BulletList({items,type='pros'}){
+  return React.createElement('ul',{style:{margin:0,padding:0,listStyle:'none'}},
+    items.map((item,i)=>React.createElement('li',{key:i,style:{fontSize:13,color:colors.slate,paddingLeft:18,position:'relative',marginBottom:5,lineHeight:1.5}},
+      React.createElement('span',{style:{position:'absolute',left:0,color:type==='pros'?colors.green:colors.red,fontWeight:700}},type==='pros'?'+':'−'),
+      item
+    ))
+  );
+}
+
+function InfoRow({label,value}){
+  return React.createElement('div',{style:{display:'grid',gridTemplateColumns:'140px 1fr',gap:12,padding:'10px 0',borderBottom:`0.5px solid ${colors.border}`}},
+    React.createElement('div',{style:{fontSize:12,fontWeight:500,color:colors.slateLight}},label),
+    React.createElement('div',{style:{fontSize:13,color:colors.slate,lineHeight:1.55}},value)
+  );
+}
+
+function StructureCard({s,activeTab}){
+  return React.createElement('div',{style:{background:colors.white,border:`1px solid ${colors.border}`,borderRadius:12,overflow:'hidden'}},
+    React.createElement('div',{style:{background:colors.navy,padding:'16px 20px',display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:12}},
+      React.createElement('div',null,
+        React.createElement('div',{style:{fontSize:11,color:colors.gold,fontWeight:600,letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:4}},`Structure ${s.id}`),
+        React.createElement('div',{style:{fontSize:17,fontWeight:600,color:colors.white}},s.label),
+        React.createElement('div',{style:{fontSize:13,color:'rgba(255,255,255,0.65)',marginTop:4}},s.short)
+      ),
+      React.createElement(Badge,{risk:s.risk})
+    ),
+    React.createElement('div',{style:{padding:'16px 20px 20px'}},
+      activeTab==='Overview' && React.createElement('div',null,
+        React.createElement('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20}},
+          React.createElement('div',null,React.createElement(SectionTitle,null,'Advantages'),React.createElement(BulletList,{items:s.pros,type:'pros'})),
+          React.createElement('div',null,React.createElement(SectionTitle,null,'Disadvantages'),React.createElement(BulletList,{items:s.cons,type:'cons'}))
+        ),
+        React.createElement('div',{style:{marginTop:16,paddingTop:14,borderTop:`0.5px solid ${colors.border}`}},
+          React.createElement('div',{style:{display:'flex',justifyContent:'space-between',flexWrap:'wrap',gap:8}},
+            React.createElement('div',{style:{fontSize:13,color:colors.slate}},React.createElement('span',{style:{fontWeight:500}},'Acceptability: '),s.acceptability),
+            React.createElement('div',{style:{fontSize:13,color:colors.slate}},React.createElement('span',{style:{fontWeight:500}},'Usage: '),s.commonality)
+          )
+        )
+      ),
+      activeTab==='Tax & Social' && React.createElement('div',null,
+        React.createElement(InfoRow,{label:'Tax implications',value:s.tax}),
+        React.createElement(InfoRow,{label:'Social contributions',value:s.social}),
+        React.createElement(InfoRow,{label:'Double taxation risk',value:s.doubleTax})
+      ),
+      activeTab==='Residency & Visa' && React.createElement('div',null,
+        React.createElement(InfoRow,{label:'Tax residency',value:s.residency}),
+        React.createElement(InfoRow,{label:'Visa / immigration',value:s.visa}),
+        React.createElement(InfoRow,{label:'PE risk',value:s.pe})
+      ),
+      activeTab==='Compliance & Risk' && React.createElement('div',null,
+        React.createElement(InfoRow,{label:'Banking & payments',value:s.banking}),
+        React.createElement(InfoRow,{label:'Compliance burden',value:s.compliance}),
+        React.createElement(InfoRow,{label:'Legal risk',value:s.acceptability})
+      )
+    )
+  );
+}
+
+function RankingTable(){
+  const dims=['compliance','taxEfficiency','flexibility','ease'];
+  const dimLabels={compliance:'Compliance',taxEfficiency:'Tax Efficiency',flexibility:'Flexibility',ease:'Ease of Setup'};
+  return React.createElement('div',{style:{background:colors.white,border:`1px solid ${colors.border}`,borderRadius:12,overflow:'hidden',marginBottom:20}},
+    React.createElement('div',{style:{background:colors.navy,padding:'14px 20px'}},
+      React.createElement('div',{style:{fontSize:15,fontWeight:600,color:colors.white}},'Ranking Matrix: All Structures'),
+      React.createElement('div',{style:{fontSize:12,color:'rgba(255,255,255,0.6)',marginTop:2}},'Scored 1–5 across four dimensions')
+    ),
+    React.createElement('div',{style:{overflowX:'auto'}},
+      React.createElement('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:13}},
+        React.createElement('thead',null,
+          React.createElement('tr',{style:{background:colors.bg}},
+            React.createElement('th',{style:{textAlign:'left',padding:'10px 16px',fontWeight:500,color:colors.slateLight,fontSize:12}},'Structure'),
+            dims.map(d=>React.createElement('th',{key:d,style:{textAlign:'center',padding:'10px 12px',fontWeight:500,color:colors.slateLight,fontSize:12}},dimLabels[d])),
+            React.createElement('th',{style:{textAlign:'center',padding:'10px 12px',fontWeight:500,color:colors.slateLight,fontSize:12}},'Total')
+          )
+        ),
+        React.createElement('tbody',null,
+          rankingData.map((row,i)=>{
+            const total=dims.reduce((s,d)=>s+row[d],0);
+            return React.createElement('tr',{key:i,style:{background:i===0?'#f0fdf4':i%2===0?colors.bg:colors.white,borderTop:`0.5px solid ${colors.border}`}},
+              React.createElement('td',{style:{padding:'10px 16px',fontWeight:i===0?600:400,color:i===0?colors.green:colors.slate}},
+                row.label,
+                i===0&&React.createElement('span',{style:{marginLeft:6,fontSize:10,background:colors.greenBg,color:colors.green,padding:'1px 6px',borderRadius:10,fontWeight:600}},'RECOMMENDED')
+              ),
+              dims.map(d=>React.createElement('td',{key:d,style:{textAlign:'center',padding:'10px 12px'}},React.createElement(ScoreDots,{score:row[d]}))),
+              React.createElement('td',{style:{textAlign:'center',padding:'10px 12px',fontWeight:600,color:total>=16?colors.green:total>=12?colors.amber:colors.red}},`${total}/20`)
+            );
+          })
+        )
+      )
+    )
+  );
+}
+
+function RecommendationPanel(){
+  const recs=[
+    {rank:'Primary',color:colors.green,bg:colors.greenBg,title:'Hybrid: Salary + UAE FZ Advisory Fee',why:'Best overall balance of compliance, tax efficiency, and flexibility. Preserves 0% PIT window; UAE fee income manages post-2028 exposure strategically. Most commonly used by senior GCC executives.',action:'Establish UAE Free Zone entity (DIFC, DMCC, or Meydan FZ) before Oman employment commences. Agree clear role separation with Oman employer: employment role (salary) vs advisory mandate (fee). Document scrupulously.'},
+    {rank:'For Long-Term Relocation',color:colors.blue,bg:colors.blueBg,title:'Executive Relocation Package (Option 6)',why:'Maximises quality-of-life and total compensation value for a genuine, permanent relocation. Full family package severs KZ tax residency cleanly. Pre-2028 allowances (housing, schooling, flights) remain outside PIT scope.',action:'Negotiate housing, schooling, annual flights, and private medical insurance as employer-paid benefits — not salary supplements.'},
+    {rank:'For Consulting Flexibility',color:colors.purple,bg:colors.purpleBg,title:'UAE Free Zone Company (Option 3)',why:'Preserves ability to serve multiple GCC clients. Post-2028, fee income through UAE FZ attracts 0–9% UAE CIT vs 5% Oman PIT — advantageous if consulting revenues are large.',action:'Maintain genuine UAE substance: UAE bank account, UAE director meetings, UAE-located deliverables. Critical for PE risk mitigation and UAE CIT free zone qualification.'},
+    {rank:'Safest Legally',color:colors.navy,bg:'#f0f4ff',title:'Direct Employment (Option 1)',why:'Zero compliance risk. Fully accepted by all Oman entities. Simplest banking and immigration pathway. If no consulting flexibility needed, this is the clean, defensible choice.',action:'Negotiate salary carefully: basic salary, housing allowance, transport, schooling, end-of-service terms. Pre-2028: no PIT. Post-2028: consider limiting basic salary to OMR 42K and structuring balance as allowances.'},
+  ];
+  const checklist=['Spend fewer than 183 days in Kazakhstan in the relocation year','Relocate spouse and dependants to Oman (breaks centre of vital interests)','Sell or cease primary use of KZ residential property','Close or transfer KZ bank accounts to Oman or UAE institutions','Obtain Oman/UAE tax residency certificate from local tax authority','Obtain KZ non-resident certificate (notify KZ tax authority of departure)','Use Oman-KZ DTAA tie-breaker rules if dual residency dispute arises','Declare any KZ-source income (dividends, rent) — still taxable in KZ at 15% WHT even as non-resident'];
+  return React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:16}},
+    React.createElement('div',{style:{background:colors.navy,borderRadius:12,padding:24}},
+      React.createElement('div',{style:{fontSize:13,color:colors.gold,fontWeight:600,textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:8}},'Executive Summary'),
+      React.createElement('div',{style:{fontSize:16,fontWeight:600,color:colors.white,marginBottom:12}},'Optimal Structure for a Kazakhstan National Relocating to Oman'),
+      React.createElement('div',{style:{fontSize:13,color:'rgba(255,255,255,0.75)',lineHeight:1.7}},'The current Oman fiscal environment (0% PIT until 2027) combined with the newly ratified Oman-Kazakhstan DTAA (Sep 2025) creates a narrow but significant window of opportunity for tax-free compensation structuring. The recommended approach is a Hybrid Structure combining a base employment salary in Oman with advisory/consulting fees channelled through a UAE Free Zone entity.')
+    ),
+    ...recs.map((r,i)=>React.createElement('div',{key:i,style:{background:r.bg,border:`1px solid ${r.color}33`,borderRadius:12,padding:18}},
+      React.createElement('div',{style:{fontSize:11,fontWeight:600,color:r.color,textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:4}},r.rank),
+      React.createElement('div',{style:{fontSize:15,fontWeight:600,color:colors.navy,marginBottom:8}},r.title),
+      React.createElement('div',{style:{fontSize:13,color:colors.slate,lineHeight:1.6,marginBottom:10}},r.why),
+      React.createElement('div',{style:{fontSize:12,color:r.color,fontWeight:500}},`→ ${r.action}`)
+    )),
+    React.createElement('div',{style:{background:colors.bg,borderRadius:12,padding:20,border:`1px solid ${colors.border}`}},
+      React.createElement('div',{style:{fontSize:13,fontWeight:600,color:colors.navy,marginBottom:12}},'Kazakhstan Tax Residency Exit — Critical Checklist'),
+      checklist.map((item,i)=>React.createElement('div',{key:i,style:{display:'flex',gap:10,alignItems:'flex-start',marginBottom:8}},
+        React.createElement('div',{style:{minWidth:20,height:20,borderRadius:'50%',background:colors.navy,color:colors.white,fontSize:10,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',marginTop:1}},i+1),
+        React.createElement('div',{style:{fontSize:13,color:colors.slate,lineHeight:1.55}},item)
+      ))
+    ),
+    React.createElement('div',{style:{background:colors.amberBg,border:`1px solid ${colors.amber}44`,borderRadius:10,padding:16,fontSize:12,color:colors.amber,lineHeight:1.6}},
+      React.createElement('strong',null,'Important disclosure: '),
+      'This analysis is provided for strategic planning purposes only and does not constitute legal or tax advice. The Oman PIT law (effective 2028) and Oman-Kazakhstan DTAA are recent developments; executive regulations are pending. Engage a Big4 firm or specialist GCC tax counsel before implementing any structure.'
+    )
+  );
+}
+
+function App(){
+  const [activeTab,setActiveTab]=useState('Overview');
+  const [filter,setFilter]=useState('all');
+  const filtered=filter==='all'?structures:filter==='low'?structures.filter(s=>s.risk==='low'||s.risk==='medium-low'):structures.filter(s=>[1,3,5,6].includes(s.id));
+
+  return React.createElement('div',{style:{fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif',background:colors.bg,minHeight:'100vh',paddingBottom:40}},
+    // Header
+    React.createElement('div',{style:{background:colors.navy,padding:'28px 24px 24px'}},
+      React.createElement('div',{style:{maxWidth:860,margin:'0 auto'}},
+        React.createElement('div',{style:{fontSize:11,color:colors.gold,fontWeight:600,letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:8}},'Confidential Advisory Memorandum'),
+        React.createElement('div',{style:{fontSize:22,fontWeight:600,color:colors.white,lineHeight:1.3,marginBottom:6}},'Kazakhstan → Oman: Employment & Compensation Structuring'),
+        React.createElement('div',{style:{fontSize:13,color:'rgba(255,255,255,0.6)'}},'Senior Advisory / Executive Role · Cross-Border Tax & Residency Analysis · May 2026'),
+        React.createElement('div',{style:{display:'flex',gap:16,marginTop:16,flexWrap:'wrap'}},
+          [{text:'Oman PIT: 5% from Jan 2028 (>OMR 42K)',color:colors.goldLight},{text:'KZ-Oman DTAA: ratified by Oman Sep 2025',color:'#86efac'},{text:'UAE: 9% CIT on profits >AED 375K',color:'#93c5fd'}]
+            .map((a,i)=>React.createElement('div',{key:i,style:{fontSize:12,color:a.color,fontWeight:500}},`⚡ ${a.text}`))
+        )
+      )
+    ),
+    // Main
+    React.createElement('div',{style:{maxWidth:860,margin:'0 auto',padding:'0 16px'}},
+      // Tabs
+      React.createElement('div',{style:{display:'flex',gap:4,borderBottom:`1px solid ${colors.border}`,margin:'20px 0 20px',overflowX:'auto'}},
+        tabs.map(t=>React.createElement('button',{key:t,onClick:()=>setActiveTab(t),style:{padding:'8px 16px',fontSize:13,fontWeight:activeTab===t?600:400,color:activeTab===t?colors.navy:colors.slateLight,background:'transparent',border:'none',borderBottom:activeTab===t?`2px solid ${colors.navy}`:'2px solid transparent',cursor:'pointer',whiteSpace:'nowrap',marginBottom:-1}},t))
+      ),
+      activeTab==='Recommendation'
+        ? React.createElement('div',null,React.createElement(RankingTable),React.createElement(RecommendationPanel))
+        : React.createElement('div',null,
+            React.createElement('div',{style:{display:'flex',gap:8,marginBottom:16,alignItems:'center'}},
+              React.createElement('span',{style:{fontSize:12,color:colors.slateLight}},'Filter:'),
+              [{key:'all',label:'All structures'},{key:'low',label:'Low risk only'},{key:'common',label:'Most common'}]
+                .map(f=>React.createElement('button',{key:f.key,onClick:()=>setFilter(f.key),style:{padding:'4px 12px',fontSize:12,borderRadius:20,border:`1px solid ${filter===f.key?colors.navy:colors.border}`,background:filter===f.key?colors.navy:colors.white,color:filter===f.key?colors.white:colors.slate,cursor:'pointer',fontWeight:filter===f.key?500:400}},f.label))
+            ),
+            React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:16}},
+              filtered.map(s=>React.createElement(StructureCard,{key:s.id,s,activeTab}))
+            )
+          )
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>
